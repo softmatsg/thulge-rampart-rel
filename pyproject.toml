@@ -1,0 +1,106 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "rampart"
+version = "0.1.0"
+description = "Pure in-RAM instruction-block registry with priority-ordered context compilation."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { file = "LICENSE" }
+keywords = ["llm", "agent", "context", "memory", "instruction-following"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "License :: Other/Proprietary License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = [
+    "numpy>=1.26",
+    "python-frontmatter>=1.1",
+    "pyyaml>=6.0",
+    "tiktoken>=0.7",
+]
+
+[project.optional-dependencies]
+# Sentence-transformers is optional: the registry works without an
+# embedding model for callers that don't use ``find_relevant`` /
+# ``score_block`` against an embedded task. Install with
+# ``pip install rampart[embed]`` to enable embedding-based scoring.
+embed = ["sentence-transformers>=2.7"]
+
+# HTTP backends (Ollama, OpenAI-compatible servers). Pulls in httpx.
+http = ["httpx>=0.27"]
+
+# Reference agent loop (BlockAgent) + HTTP backends. Install with
+# ``pip install rampart[agent]`` to get the agent + HTTP backends in
+# one shot.
+agent = ["httpx>=0.27"]
+
+# Local-inference backend wrapping llama-cpp-python. Left empty by
+# default because the prebuilt wheels on PyPI are CPU-only; for a
+# CUDA-enabled local install, follow the abetlen/llama-cpp-python
+# README and install the matching wheel manually before importing
+# ``LlamaCppBackend``.
+local = []
+
+dev = [
+    "pytest>=8.0",
+    "pytest-cov>=5.0",
+    "ruff>=0.5",
+    "mypy>=1.10",
+    "types-PyYAML>=6.0",
+    "httpx>=0.27",
+    "sentence-transformers>=2.7",
+]
+
+[tool.setuptools]
+packages = ["rampart", "blockagent", "blockagent.backends", "blockagent.tools", "blockagent.eval"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "W", "F", "I", "N", "UP", "B", "ANN"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["ANN201", "ANN202"]
+
+[tool.ruff.format]
+quote-style = "double"
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+explicit_package_bases = true
+
+[[tool.mypy.overrides]]
+module = [
+    "sentence_transformers.*",
+    "tiktoken.*",
+    "llama_cpp.*",
+    "frontmatter.*",
+]
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "--cov=rampart --cov=blockagent --cov-report=term-missing"
+
+[tool.coverage.run]
+source = ["rampart", "blockagent"]
+branch = false
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "if TYPE_CHECKING:",
+    "raise NotImplementedError",
+    "^\\s*\\.\\.\\.\\s*$",
+    "pragma: no cover - OS-conditional",
+]
