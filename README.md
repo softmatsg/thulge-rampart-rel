@@ -1,6 +1,14 @@
 # RAMPART
 
-**R**egistry-based **A**gentic **M**emory with **P**riority-**A**ware **R**untime **T**ransformation.
+**Registry-based Agentic Memory with Priority-Aware Runtime Transformation**
+
+Nikodem Tomczak, Thulge Labs, Singapore
+
+[![arXiv](https://img.shields.io/badge/arXiv-2606.04628-b31b1b.svg)](https://arxiv.org/abs/2606.04628)
+
+Copyright (c) 2026 Nikodem Tomczak, Thulge Labs. All rights reserved.
+
+---
 
 A small Python library for managing an ordered, mutable set of
 natural-language instruction blocks that compile into a single prompt
@@ -193,5 +201,13 @@ Thulge Labs. See [LICENSE](LICENSE) for the full text.
 
 ## Citation
 
-If you use RAMPART in academic work, please cite the accompanying
-position-sensitivity paper (link to be added on publication).
+```bibtex
+@article{tomczak2026rampart,
+  title={RAMPART: Registry-based Agentic Memory with Priority-Aware
+         Runtime Transformation},
+  author={Tomczak, Nikodem},
+  journal={arXiv preprint arXiv:2606.04628},
+  year={2026},
+  url={https://arxiv.org/abs/2606.04628}
+}
+```
